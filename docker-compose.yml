@@ -9,7 +9,7 @@ services:
     ports:
       - "8100-8102:8000"
     environment:
-      - DATABASE_URL=postgresql://hello_fastapi:hello_f
+      - DATABASE_URL=postgresql://srivathsan:fastapi_app_mnist
     depends_on:
       - db
     deploy:
@@ -23,9 +23,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=hello_fastapi
-      - POSTGRES_PASSWORD=hello_fastapi
-      - POSTGRES_DB=hello_fastapi_dev
+      - POSTGRES_USER=srivathsan
+      - POSTGRES_PASSWORD=srivathsan
+      - POSTGRES_DB=srivathsan_dev
     ports:
       - "5432:5432"
 
@@ -64,4 +64,4 @@ volumes:
 
 networks:
   default: 
-    name: hello_fastapi
+    name: srivathsan
