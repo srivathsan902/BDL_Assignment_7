@@ -40,16 +40,10 @@ def predict_digit(data_point):
         data_point = format_image(data_point).reshape((1, 784))
     else:
         data_point = data_point.convert("L").reshape((1, 784))
-    
-    # Placeholder for actual prediction logic
-    # time.sleep(2*np.random.random())  # Simulating processing time
 
     return str(np.random.randint(10))  # Placeholder for predicted digit
 
 def process_memory():
-    # process = psutil.Process(os.getpid())
-    # mem_info = process.memory_info()
-    # return mem_info.rss
     return psutil.virtual_memory().used/(1024)
 
 @app.post("/predict/")
@@ -74,7 +68,6 @@ async def predict_image(request: Request, file: UploadFile = File(...)):
     cpu_percent = psutil.cpu_percent(interval=1)
     memory_usage_end = process_memory()
     CPU_USAGE_GAUGE.set(cpu_percent)
-    # MEMORY_USAGE_GAUGE.set(memory_usage_start)
     MEMORY_USAGE_GAUGE.set((np.abs(memory_usage_end-memory_usage_start)))
     
     # Calculate API running time
@@ -92,10 +85,6 @@ async def predict_image(request: Request, file: UploadFile = File(...)):
     
     return {"digit": predicted_digit}
 
-# cpu_percent = psutil.cpu_percent()
-# memory_usage = psutil.virtual_memory().used/(1024*1024)
-# CPU_USAGE_GAUGE.set(cpu_percent)
-# MEMORY_USAGE_GAUGE.set(memory_usage)
 if __name__ == "__main__":
     # Start Prometheus metrics server
     start_http_server(8001)
