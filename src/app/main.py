@@ -44,12 +44,13 @@ def predict_digit(data_point):
     # Placeholder for actual prediction logic
     # time.sleep(2*np.random.random())  # Simulating processing time
 
-    return str(1)  # Placeholder for predicted digit
+    return str(np.random.randint(10))  # Placeholder for predicted digit
 
 def process_memory():
-    process = psutil.Process(os.getpid())
-    mem_info = process.memory_info()
-    return mem_info.rss
+    # process = psutil.Process(os.getpid())
+    # mem_info = process.memory_info()
+    # return mem_info.rss
+    return psutil.virtual_memory().used/(1024)
 
 @app.post("/predict/")
 async def predict_image(request: Request, file: UploadFile = File(...)):
@@ -70,11 +71,11 @@ async def predict_image(request: Request, file: UploadFile = File(...)):
 
     predicted_digit = predict_digit(image)
 
-    cpu_percent = psutil.cpu_percent()
+    cpu_percent = psutil.cpu_percent(interval=1)
     memory_usage_end = process_memory()
     CPU_USAGE_GAUGE.set(cpu_percent)
     # MEMORY_USAGE_GAUGE.set(memory_usage_start)
-    MEMORY_USAGE_GAUGE.set((memory_usage_end-memory_usage_start)/(1024*1024))
+    MEMORY_USAGE_GAUGE.set((np.abs(memory_usage_end-memory_usage_start)))
     
     # Calculate API running time
     end_time = time.time()
